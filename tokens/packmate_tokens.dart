@@ -2,7 +2,9 @@
 // Wird 1:1 nach packages/packmate_kernel/lib/src/tokens/packmate_tokens.dart übernommen.
 // Keine Widgets, keine Logik — nur Daten.
 
-import 'package:flutter/material.dart';
+// painting.dart ist widget-frei (Color, TextStyle, BorderRadius etc.)
+// buildPackmateTheme() lebt in lib/main.dart (braucht material.dart → App-Layer)
+import 'package:flutter/painting.dart';
 
 // ── Farben ────────────────────────────────────────────────────────────────────
 
@@ -88,105 +90,10 @@ abstract final class PackText {
 }
 
 // ── ThemeData ─────────────────────────────────────────────────────────────────
-
-/// Fertig konfiguriertes ThemeData — in main.dart verwenden.
-ThemeData buildPackmateTheme() {
-  return ThemeData(
-    useMaterial3: true,
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: PackColors.packBlue,
-      primary: PackColors.packBlue,
-      onPrimary: PackColors.packWhite,
-      secondary: PackColors.packAmber,
-      onSecondary: PackColors.packWhite,
-      error: PackColors.packRed,
-      onError: PackColors.packWhite,
-      surface: PackColors.packWhite,
-      onSurface: PackColors.packGray900,
-    ),
-    scaffoldBackgroundColor: PackColors.packWhite,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: PackColors.packWhite,
-      foregroundColor: PackColors.packGray900,
-      elevation: 0,
-      titleTextStyle: PackText.titleLarge,
-    ),
-    filledButtonTheme: FilledButtonThemeData(
-      style: FilledButton.styleFrom(
-        backgroundColor: PackColors.packBlue,
-        foregroundColor: PackColors.packWhite,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(PackRadius.md),
-        ),
-        padding: const EdgeInsets.symmetric(
-          vertical: PackSpacing.md,
-          horizontal: PackSpacing.xl,
-        ),
-        textStyle: const TextStyle(
-          fontSize: 16, fontWeight: FontWeight.w600,
-        ),
-      ),
-    ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: PackColors.packBlue,
-        side: const BorderSide(color: PackColors.packBlue, width: 1.5),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(PackRadius.md),
-        ),
-        padding: const EdgeInsets.symmetric(
-          vertical: PackSpacing.md,
-          horizontal: PackSpacing.xl,
-        ),
-      ),
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: PackColors.packBlue,
-      ),
-    ),
-    inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(PackRadius.md),
-        borderSide: const BorderSide(color: PackColors.packGray300),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(PackRadius.md),
-        borderSide: const BorderSide(color: PackColors.packGray300),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(PackRadius.md),
-        borderSide: const BorderSide(color: PackColors.packBlue, width: 2),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(PackRadius.md),
-        borderSide: const BorderSide(color: PackColors.packRed),
-      ),
-      labelStyle: PackText.bodyMedium,
-      floatingLabelStyle: const TextStyle(
-        color: PackColors.packBlue, fontSize: 14, fontWeight: FontWeight.w500,
-      ),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: PackSpacing.lg,
-        vertical: PackSpacing.md,
-      ),
-    ),
-    cardTheme: CardThemeData(
-      elevation: 0,
-      color: PackColors.packWhite,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(PackRadius.lg),
-        side: const BorderSide(color: PackColors.packGray300),
-      ),
-      margin: EdgeInsets.zero,
-    ),
-    dividerTheme: const DividerThemeData(
-      color: PackColors.packGray300,
-      thickness: 1,
-      space: 1,
-    ),
-    progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: PackColors.packBlue,
-    ),
-  );
-}
+// buildPackmateTheme() gehört ins App-Layer (lib/main.dart), nicht in den Kernel.
+// ThemeData braucht package:flutter/material.dart (Widget-haltig) — das bleibt
+// außerhalb von packmate_kernel (Contract G1=B: Kernel widget-frei).
+//
+// Die vollständige Implementierung befindet sich in lib/main.dart des
+// PackMate-1.0-Repos. Tokens (PackColors, PackSpacing, PackText, PackRadius)
+// werden dort referenziert.
